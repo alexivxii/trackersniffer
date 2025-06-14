@@ -12,7 +12,9 @@ chrome.webRequest.onBeforeRequest.addListener(
     try {
       const url = new URL(details.url);
       const domain = url.hostname;
-      if (trackerDomains.some(tracker => domain.ends(tracker))) {
+
+      //needs cleaning
+      if (trackerDomains.some(tracker => domain)) {
         if (!tabTrackers[details.tabId]) tabTrackers[details.tabId] = new Set();
         tabTrackers[details.tabId].add(domain);
       }
@@ -26,5 +28,3 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     sendResponse(Array.from(tabTrackers[msg.tabId] || []));
   }
 });
-
-// works on cnn.com
